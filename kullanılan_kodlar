@@ -1,0 +1,54 @@
+###### regresyon analizi
+str(reg)
+library(stats)
+install.packages("car")
+library(car)
+
+#modelin tanımlanması
+model <- lm(y ~ x1+x2+x3+x4+x5+x6, data=reg)
+model
+
+#modelim özeti
+summary(model)
+
+#artıkların incelenmesi
+plot(model$residuals)
+hist(model$residuals)
+
+#anova
+anova(model, test = "F")
+
+#xler ile y nin scatter plot ı
+plot(y ~ x1, data=reg)
+plot(y ~ x2, data=reg)
+plot(y ~ x3, data=reg)
+plot(y ~ x4, data=reg)
+plot(y ~ x5, data=reg)
+confint(model)
+#durbin watson testi
+durbinWatsonTest(model)
+# Artıkları alın
+residuals <- residuals(model)
+
+# QQ plot grafiği
+qqnorm(residuals)
+qqline(residuals)
+
+#shapiro wilk normallik testi
+shapiro.test(residuals)
+
+fitted_values <- fitted(model)
+
+# Residual vs Fitted Values Grafiği
+plot(fitted_values, residuals, main = "Residual vs Fitted Values Plot",
+     xlab = "Fitted Values", ylab = "Residuals")
+
+# Eğer homoscedasticity varsayımı sağlanıyorsa, bu grafiğin dağılımı düzensiz bir şekilde olmalıdır.
+abline(h = 0, col = "red", lty = 2)  # Hata terimlerinin 0 etrafında simetrik olması beklenir
+
+
+
+# Tek örneklem t testi ile ortalama güven aralığı
+güven_aralığı <- t.test(reg$x1)
+
+güven_aralığı
